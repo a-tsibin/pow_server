@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  server:
+    image: server
+    ports:
+      - "7373:7373"
+    environment:
+      PATH: "/resources"
+      PORT: "7373"
+      DIFFICULTY: "2"
+
+  client:
+    image: client
+    environment:
+      HOST: "127.0.0.1"
+      PORT: "7373"
+    network_mode: host
+    depends_on:
+      - server

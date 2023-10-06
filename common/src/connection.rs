@@ -23,7 +23,7 @@ impl<'a> Connection<'a> {
 
     pub async fn send<T: Serialize>(&mut self, msg: &T) -> Result<()> {
         let data = bincode::serialize(msg)?;
-        let _bytes = self.tcp_stream.write_all(&data).await?;
+        self.tcp_stream.write_all(&data).await?;
         Ok(())
     }
 

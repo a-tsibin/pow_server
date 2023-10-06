@@ -2,7 +2,7 @@ use crate::errors::CommonErrors::InvalidSolution;
 use crate::proto::{ChallengeMessage, SIZE};
 use anyhow::{anyhow, Result};
 use log::trace;
-use rand::Rng;
+use rand::{random, Rng};
 use sha2::{Digest, Sha256};
 
 pub struct Challenge {
@@ -13,7 +13,7 @@ pub struct Challenge {
 
 impl Challenge {
     pub fn new(difficulty: u8) -> Challenge {
-        let seq = rand::thread_rng().gen::<[u8; SIZE]>();
+        let seq = random::<[u8; SIZE]>();
         let mut hash = Sha256::new();
         hash.update(seq);
         Self {
@@ -83,8 +83,8 @@ mod tests {
         let solution = challenge.solve();
         assert!(challenge.check_solution(&solution).is_ok());
         let mut hash = Sha256::default();
-        hash.update(&challenge.hash_seq);
-        hash.update(&solution);
+        hash.update(challenge.hash_seq);
+        hash.update(solution);
         let hash_hex = format!("{:x}", hash.finalize());
         assert!(hash_hex.starts_with("00"));
     }

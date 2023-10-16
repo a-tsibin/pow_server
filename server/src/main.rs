@@ -1,14 +1,18 @@
+mod cache;
 mod config;
 mod errors;
 mod server;
 mod wow_service;
 
-use crate::config::ServerConfig;
-use crate::server::Server;
-use crate::wow_service::WowService;
 use anyhow::Result;
 use env_logger::Target;
 use log::*;
+
+use crate::{
+    config::ServerConfig,
+    server::Server,
+    wow_service::WowService,
+};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -21,7 +25,8 @@ async fn main() -> Result<()> {
     info!("Config successfully loaded");
     let wow_service = WowService::new(cfg.wow_path.as_path()).await?;
     info!("Words of wisdom service initialized");
-    let server = Server::new(cfg, wow_service);
+    let cache = cache::in_memory_cache::InMemoryCache::new(cfg.cache_capacity);
+    let server = Server::new(cfg, wow_service, cache);
     server.start().await?;
     Ok(())
 }

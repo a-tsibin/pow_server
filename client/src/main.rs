@@ -1,11 +1,15 @@
 mod client;
 mod config;
 
-use crate::client::Client;
-use crate::config::ClientConfig;
 use anyhow::Result;
 use env_logger::Target;
 use log::*;
+use rand::random;
+
+use crate::{
+    client::Client,
+    config::ClientConfig,
+};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -15,7 +19,8 @@ async fn main() -> Result<()> {
         .init();
     info!("Initializing client...");
     let cfg = ClientConfig::from_env()?;
-    let client = Client::new(cfg);
+    let client_id: u64 = random();
+    let client = Client::new(cfg, client_id);
     client.start().await?;
     Ok(())
 }

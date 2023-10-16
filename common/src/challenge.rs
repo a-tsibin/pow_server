@@ -1,14 +1,29 @@
-use crate::errors::CommonErrors::InvalidSolution;
-use crate::proto::{ChallengeMessage, SIZE};
-use anyhow::{anyhow, Result};
 use log::trace;
-use rand::{random, Rng};
-use sha2::{Digest, Sha256};
+use rand::{
+    random,
+    Rng,
+};
+use sha2::{
+    Digest,
+    Sha256,
+};
 
+use crate::{
+    errors::{
+        CommonErrors,
+        CommonErrors::InvalidSolution,
+    },
+    proto::{
+        ChallengeMessage,
+        SIZE,
+    },
+};
+
+#[derive(Clone)]
 pub struct Challenge {
     pub difficulty: u8,
-    pub hash_seq: [u8; SIZE],
-    pub hash: Sha256,
+    pub hash_seq:   [u8; SIZE],
+    pub hash:       Sha256,
 }
 
 impl Challenge {
@@ -23,7 +38,7 @@ impl Challenge {
         }
     }
 
-    pub fn check_solution(&self, solution: &[u8; SIZE]) -> Result<()> {
+    pub fn check_solution(&self, solution: &[u8; SIZE]) -> Result<(), CommonErrors> {
         let mut hash = self.hash.clone();
         hash.update(solution);
         let result = hash.finalize();
@@ -39,9 +54,9 @@ impl Challenge {
             .unwrap_or_else(|e| e);
 
         if zeros >= self.difficulty {
-            return Ok(());
+            return Ok(())
         }
-        Err(anyhow!(InvalidSolution))
+        Err(InvalidSolution)
     }
 
     pub fn solve(&self) -> [u8; SIZE] {
@@ -53,7 +68,7 @@ impl Challenge {
             tries += 1;
             if let Ok(()) = self.check_solution(&possible_solution) {
                 trace!("Challenge successfully solved after {} tries", tries);
-                return possible_solution;
+                return possible_solution
             }
         }
     }
@@ -73,9 +88,15 @@ impl From<ChallengeMessage> for Challenge {
 
 #[cfg(test)]
 mod tests {
-    use crate::challenge::Challenge;
-    use crate::proto::SIZE;
-    use sha2::{Digest, Sha256};
+    use sha2::{
+        Digest,
+        Sha256,
+    };
+
+    use crate::{
+        challenge::Challenge,
+        proto::SIZE,
+    };
 
     #[test]
     fn test_challenge_solution() {

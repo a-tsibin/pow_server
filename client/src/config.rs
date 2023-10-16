@@ -1,5 +1,6 @@
-use anyhow::Result;
 use std::env;
+
+use anyhow::Result;
 
 pub struct ClientConfig {
     pub host: String,

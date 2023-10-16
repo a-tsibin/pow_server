@@ -1,0 +1,42 @@
+unstable_features = true
+
+# Aestetics. More readable 
+combine_control_expr = false
+
+# Aestetics. More readable enums and structs if possible.
+enum_discrim_align_threshold = 30
+struct_field_align_threshold = 30
+
+# Functionality. If you decided to delete a return there won't be a semicolon to f**k you up.
+trailing_semicolon = false
+
+# Functionality. Let rustfmt delete unnessessary field in shorthand init.
+use_field_init_shorthand = true
+
+# Functionality. Its always a pain to wrap 'async move' in braces within 'tokio::spawn'.
+force_multiline_blocks = true
+
+# Readability. Makes macros a lil more readable.
+format_macro_matchers = true
+
+# Aestetics. More consistent imports.
+imports_layout = "Vertical"
+imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
+
+# Readability. Consts should always be put in the top of impls.
+reorder_impl_items = true
+
+# Readability. Literals are code.
+format_strings = true
+
+# Functionality. rustfmt will warn you if you forgot something.
+# report_fixme = "Always"
+# report_todo = "Always"
+
+# Readability. More consistent and **copyable** matches.
+match_arm_leading_pipes = "Preserve"
+
+# Functionality. 
+newline_style = "Unix"
+

@@ -1,16 +1,23 @@
 use anyhow::Result;
-use log::info;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::TcpStream;
+use log::trace;
+use serde::{
+    de::DeserializeOwned,
+    Serialize,
+};
+use tokio::{
+    io::{
+        AsyncReadExt,
+        AsyncWriteExt,
+    },
+    net::TcpStream,
+};
 
-pub struct Connection<'a> {
-    tcp_stream: &'a mut TcpStream,
+pub struct Connection {
+    tcp_stream: TcpStream,
 }
 
-impl<'a> Connection<'a> {
-    pub fn new(stream: &'a mut TcpStream) -> Connection {
+impl Connection {
+    pub fn new(stream: TcpStream) -> Connection {
         Connection { tcp_stream: stream }
     }
 
@@ -28,7 +35,7 @@ impl<'a> Connection<'a> {
     }
 
     pub async fn close(&mut self) -> Result<()> {
-        info!("Closing connection");
+        trace!("Closing connection");
         Ok(self.tcp_stream.shutdown().await?)
     }
 }

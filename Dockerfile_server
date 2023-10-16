@@ -21,7 +21,8 @@ EXPOSE 7373
 
 ENV PATH /resources/wow
 ENV PORT 7373
-ENV DIFFICULTY=2
+ENV DIFFICULTY 2
+ENV CACHE_CAPACITY 10000
 
 ENTRYPOINT ["/usr/bin/dumb-init","--"]
 CMD ["server"]

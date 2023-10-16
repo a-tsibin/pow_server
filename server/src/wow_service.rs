@@ -1,10 +1,20 @@
-use crate::errors::ServerError;
-use anyhow::{anyhow, Result};
+use std::path::Path;
+
+use anyhow::{
+    anyhow,
+    Result,
+};
 use log::info;
 use rand::seq::SliceRandom;
-use std::path::Path;
-use tokio::fs::File;
-use tokio::io::{AsyncBufReadExt, BufReader};
+use tokio::{
+    fs::File,
+    io::{
+        AsyncBufReadExt,
+        BufReader,
+    },
+};
+
+use crate::errors::ServerError;
 
 pub struct WowService {
     quotes: Vec<String>,
@@ -37,8 +47,9 @@ impl WowService {
 
 #[cfg(test)]
 mod tests {
-    use crate::WowService;
     use std::path::PathBuf;
+
+    use crate::WowService;
 
     #[tokio::test]
     async fn test_quotas_loading() {

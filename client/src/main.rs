@@ -11,6 +11,7 @@ use crate::{
     config::ClientConfig,
 };
 
+// TODO: add request's retry logic
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::builder()

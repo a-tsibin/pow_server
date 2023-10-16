@@ -14,6 +14,7 @@ use crate::{
     wow_service::WowService,
 };
 
+// TODO: add keep-alive
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::builder()
